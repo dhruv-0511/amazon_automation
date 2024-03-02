@@ -40,12 +40,3 @@ def get_order_status(ordering_object_id:int):
         logger.exception(f'Exception in Get Order Status: {e}')
         raise HTTPException(status_code=401, detail=f'Exception in Get Order Status: {e}')
 
-
-@router.post(f"/pass_otp_string", summary="Get OTP")
-def pass_otp_string(otp_string:str):
-    try:
-        status = ordering_object_id_wise_dict[ordering_object_id].pass_otp_string(otp_string=otp_string)
-        return {"status": status}
-    except Exception as e:
-        logger.exception(f'Exception in Get OTP: {e}')
-        raise HTTPException(status_code=401, detail=f'Exception in Get OTP: {e}')
