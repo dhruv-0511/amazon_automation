@@ -10,13 +10,13 @@ Data analysis tools for insights into Amazon sales and performance.
 
 Getting Started:
 
-Clone the repository to your local machine.
-Install dependencies from the requirements.txt file.
-Run the FastAPI server using command: uvicorn main:app --reload.
-Access the API endpoints by going to localhost:8000/docs#/.
-Click on post api of initiate amazon automation.
-Provide the email, password of your amazon account(there is no data stored) and product link.
-Click on Execute.
+1) Clone the repository to your local machine.
+2)Install dependencies from the requirements.txt file.
+3)Run the FastAPI server using command: uvicorn main:app --reload.
+4)Access the API endpoints by going to localhost:8000/docs#/.
+5)Click on post api of initiate amazon automation.
+6)Provide the email, password of your amazon account(there is no data stored) and product link.
+7)Click on Execute.
 
 Contact:
 For any inquiries or support, please contact dhruvgolani0504@gmail.com.
