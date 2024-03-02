@@ -1,27 +1,29 @@
-FastAPI Amazon Automation
+# FastAPI Amazon Automation
 
-This project utilizes FastAPI to implement Amazon automation functionalities. Features include automatic ordering of the product link you provide. Explore the codebase to understand FastAPI integration and Amazon automation techniques.
+This project leverages FastAPI to automate various functionalities on Amazon. Its primary feature includes automated product ordering based on the provided product link. Explore the codebase to gain insights into FastAPI integration and Amazon automation techniques.
 
-Key Features:
+## Key Features:
 
-FastAPI implementation for robust web services.
-Amazon automation for order processing.
-Data analysis tools for insights into Amazon sales and performance.
+- FastAPI implementation for creating robust web services.
+- Amazon automation capabilities for streamlined order processing.
+- Data analysis tools for gaining insights into Amazon sales and performance.
 
-Getting Started:
+## Getting Started:
 
-1) Clone the repository to your local machine.
-2) Install dependencies from the requirements.txt file.
-3) Run the FastAPI server using command: uvicorn main:app --reload.
-4) Access the API endpoints by going to localhost:8000/docs#/.
-5) Click on post api of initiate amazon automation.
-6) Provide the email, password of your amazon account(there is no data stored) and product link.
-7) Click on Execute.
+1. Clone the repository to your local machine.
+2. Install dependencies from the requirements.txt file.
+3. Run the FastAPI server using the command: `uvicorn main:app --reload`.
+4. Access the API endpoints by navigating to `localhost:8000/docs#/`.
+5. Click on the POST API to initiate Amazon automation.
+6. Provide your Amazon account email, password (no data stored), and the product link.
+7. Click on "Execute" to trigger the automation process.
 
-Contact:
-For any inquiries or support, please contact dhruvgolani0504@gmail.com.
+## Contact:
 
-Note:
-This project is for educational and demonstration purposes only. Use it responsibly and in compliance with Amazon's terms of service and API usage policies. Usage of this project for commercial use can lead to legal issues.
+For inquiries or support, please reach out to dhruvgolani0504@gmail.com.
+
+## Note:
+
+This project serves educational and demonstration purposes exclusively. Please use it responsibly and in accordance with Amazon's terms of service and API usage policies. Any commercial use of this project may lead to legal implications.
 
 Happy Automating!
