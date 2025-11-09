@@ -13,7 +13,7 @@ This project leverages FastAPI to automate various functionalities on Amazon. It
 1. Clone the repository to your local machine.
 2. Install dependencies from the requirements.txt file.
 3. Run the FastAPI server using the command: `uvicorn main:app --reload`.
-4. Access the API endpoints by navigating to `localhost:8000/docs#/`.
+4. Access the API endpoints by navigating to `http://127.0.0.1:8000/docs#/`.
 5. Click on the POST API to initiate Amazon automation.
 6. Provide your Amazon account email, password (no data stored), and the product link.
 7. Click on "Execute" to trigger the automation process.
