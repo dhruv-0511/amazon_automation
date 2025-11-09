@@ -13,7 +13,7 @@ router = APIRouter()
 
 class AmazonOrdering:
     STATUS_PROCESS_STARTED = 1
-    STATUS_PRODUCT_FOUND = 2
+    STATUS_PRODUCT_FOUND = 2    
     STATUS_CHECKING_FOR_CAPTCHA = 3
     STATUS_CAPTCHA_FOUND = 4
     STATUS_CAPTCHA_SUCCESSFUL = 5
@@ -44,6 +44,7 @@ class AmazonOrdering:
         self.otp_string = None
         self.otp_success = 0
         self.track_order_process_thread_object = None
+        self.deliver_select = None
 
     def ordering_process_block_wise(self, email: str, password: str, product_link: str):
         self.email = email
@@ -58,23 +59,19 @@ class AmazonOrdering:
         self.ordering_process_status = self.STATUS_PRODUCT_FOUND
 
 
-        """ Removing Captcha Page """
-        time.sleep(4)
-        self.web.refresh()
-
 
         """ Checking for captcha """
-        self.ordering_process_status = self.STATUS_CHECKING_FOR_CAPTCHA
-        captcha = self.checking_for_any_captcha()
-        if captcha:
-            while self.success_captcha != 1:
-                if captcha:
-                    self.ordering_process_status = self.STATUS_CAPTCHA_FOUND
-                    self.success_captcha = self.input_captcha()
-                    if self.success_captcha == 1:
-                        self.ordering_process_status = self.STATUS_CAPTCHA_SUCCESSFUL
-                    else:
-                        self.ordering_process_status = self.STATUS_CAPTCHA_FAILED
+        # self.ordering_process_status = self.STATUS_CHECKING_FOR_CAPTCHA
+        # captcha = self.checking_for_any_captcha()
+        # if captcha:
+        #     while self.success_captcha != 1:
+        #         if captcha:
+        #             self.ordering_process_status = self.STATUS_CAPTCHA_FOUND
+        #             self.success_captcha = self.input_captcha()
+        #             if self.success_captcha == 1:
+        #                 self.ordering_process_status = self.STATUS_CAPTCHA_SUCCESSFUL
+        #             else:
+        #                 self.ordering_process_status = self.STATUS_CAPTCHA_FAILED
 
         """ BUYING THE PRODUCT"""
         self.buying_product()
@@ -84,19 +81,19 @@ class AmazonOrdering:
         self.login_user()
         self.ordering_process_status = self.STATUS_LOGIN_DONE
 
-        """ CHECKING FOR OTP """
-        self.ordering_process_status = self.STATUS_CHECKING_FOR_OTP
-        otp = self.check_for_otp()
-        if otp == 1:
-            while self.otp_success != 1:
-                self.ordering_process_status = self.STATUS_ENTER_OTP
-                while not self.otp_string is None:
-                    time.sleep(0.4)
-                self.otp_success = self.input_otp(otp=self.otp_string)
-                if self.otp_success:
-                    self.ordering_process_status = self.STATUS_OTP_SUCCESSFUL
-                else:
-                    self.ordering_process_status = self.STATUS_OTP_FAILED
+        # """ CHECKING FOR OTP """
+        # self.ordering_process_status = self.STATUS_CHECKING_FOR_OTP
+        # otp = self.check_for_otp()
+        # if otp == 1:
+        #     while self.otp_success != 1:
+        #         self.ordering_process_status = self.STATUS_ENTER_OTP
+        #         while not self.otp_string is None:
+        #             time.sleep(0.4)
+        #         self.otp_success = self.input_otp(otp=self.otp_string)
+        #         if self.otp_success:
+        #             self.ordering_process_status = self.STATUS_OTP_SUCCESSFUL
+        #         else:
+        #             self.ordering_process_status = self.STATUS_OTP_FAILED
 
         """ PLACING ORDER """
         self.ordering_process_status = self.STATUS_PLACING_ORDER
@@ -160,8 +157,7 @@ class AmazonOrdering:
     def buying_product(self):
         try:
             time.sleep(2)
-            buy_btn = self.web.find_element(By.XPATH,
-                                            "/html/body/div[2]/div/div[6]/div[3]/div[1]/div[3]/div/div[1]/div/div/div/form/div/div/div/div/div[4]/div/div[39]/div/div/span/span/input")
+            buy_btn = self.web.find_element(By.ID, "buy-now-button")
             buy_btn.click()
             time.sleep(1)
         except Exception as e:
@@ -169,21 +165,22 @@ class AmazonOrdering:
 
     def login_user(self):
         try:
-            username = self.web.find_element(By.XPATH,
-                                             "/html/body/div[1]/div[1]/div[2]/div/div[2]/div[2]/div[1]/form/div/div/div/div[1]/input[1]")
+            time.sleep(2)
+            username = self.web.find_element(By.ID,
+                                             "ap_email_login")
             username.send_keys(self.email)
 
-            submit = self.web.find_element(By.XPATH,
-                                           "/html/body/div[1]/div[1]/div[2]/div/div[2]/div[2]/div[1]/form/div/div/div/div[2]/span/span/input ")
+            submit = self.web.find_element(By.ID,
+                                           "continue")
             submit.click()
             time.sleep(2)
 
-            password = self.web.find_element(By.XPATH,
-                                             "/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div[2]/div/form/div/div[1]/input")
+            password = self.web.find_element(By.ID,
+                                             "ap_password")
             password.send_keys(self.password)
 
-            login = self.web.find_element(By.XPATH,
-                                          "/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div[2]/div/form/div/div[2]/span/span/input")
+            login = self.web.find_element(By.ID,
+                                          "auth-signin-button")
             login.click()
         except Exception as e:
             return e
@@ -220,27 +217,35 @@ class AmazonOrdering:
 
     def cash_payment(self):
         try:
-            cash_pay = self.web.find_element(By.XPATH,
-                                             "/html/body/div[5]/div[1]/div/div[2]/div/div/div[1]/div[1]/div/div[6]/div/div[3]/div/div/div[2]/div/div[2]/div/div/form/div/div[1]/div/div/div[6]/div/div/div/div/div[1]/div/label/input")
+
+            deliver_select = self.web.find_element(By.ID, "checkout-primary-continue-button-id")
+            deliver_select.click()
+
+            time.sleep(10)
+
+            cash_pay = self.web.find_element(
+                By.XPATH, "//input[@name='ppw-instrumentRowSelection' and contains(@value, 'paymentMethod=COD')]"
+            )
             cash_pay.click()
 
 
-            payment_page = WebDriverWait(self.web, 25).until(
-                EC.presence_of_element_located(
-                    (By.XPATH,
-                     "/html/body/div[5]/div[1]/div/div[2]/div/div/div[1]/div[1]/div/div[6]/div/div[3]/div/div/div[2]/div/div[2]/div/div/form/div/div[2]/div/span/span/input"))
-            )
 
-            time.sleep(5)
+            # payment_page = WebDriverWait(self.web, 25).until(
+            #     EC.presence_of_element_located(
+            #         (By.XPATH,
+            #          "/html/body/div[5]/div[1]/div/div[2]/div/div/div[1]/div[1]/div/div[6]/div/div[3]/div/div/div[2]/div/div[2]/div/div/form/div/div[2]/div/span/span/input"))
+            # )
 
-            payment_selection = self.web.find_element(By.XPATH,
-                                                      "/html/body/div[5]/div[1]/div/div[2]/div/div/div[1]/div[1]/div/div[6]/div/div[3]/div/div/div[2]/div/div[2]/div/div/form/div/div[2]/div/span/span/input")
+            # time.sleep(5)
+
+            payment_selection = self.web.find_element(By.ID,
+                                                      "checkout-primary-continue-button-id")
             payment_selection.click()
 
             time.sleep(3)
 
             # order_now = self.web.find_element(By.XPATH,
-            #                                   "/html/body/div[5]/div[1]/div/div[2]/div/div/div[2]/div/div[1]/div/div[1]/div[1]/div/span")
+            #                                   "/html/body/div[5]/div[1]/div/div/div[2]/div/div[16]/div[2]/div/div[1]/form/span/span[1]/span/span/input")
             # order_now.click()
             time.sleep(2)
 
