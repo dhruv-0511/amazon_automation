@@ -8,6 +8,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from fastapi import APIRouter
 import threading
 import time
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 
 router = APIRouter()
 
